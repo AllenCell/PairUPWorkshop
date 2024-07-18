@@ -4,3 +4,4 @@ bioio-ome-tiff
 bioio-tifffile
 scikit-image
 numpy
+ec2_metadata
