@@ -12,7 +12,6 @@ from skimage.segmentation import find_boundaries
 Computes features on manifests generated from raw and segmentation pairs
 """
 
-# /allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images
 parser= argparse.ArgumentParser()
 parser.add_argument("--input_seg_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_seg")
 parser.add_argument("--input_raw_timelapse_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images")

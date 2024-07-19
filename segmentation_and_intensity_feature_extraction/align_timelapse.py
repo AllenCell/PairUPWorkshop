@@ -19,7 +19,7 @@ parser.add_argument("--cellpose_prob", type=float, default=-5.0)
 
 
 """
-Script to align maxprojects of the timelapse to the first timepoint using SIFT. Performs a rigid registration
+Script to align maxprojects of the timelapse to the first timepoint using cross correlation. 
 """
 
 

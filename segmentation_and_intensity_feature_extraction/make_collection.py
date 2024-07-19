@@ -5,8 +5,11 @@ import json
 
 
 parser= argparse.ArgumentParser()
-parser.add_argument("--colorizer_input_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/colorizer_outputs")
+parser.add_argument("--colorizer_input_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/colorizer_outputs", help="Input directory where colorizer outputs are stored")
 
+"""
+Make Collection file to be loaded into the colorizer
+"""
 
 if __name__ == "__main__":
     args = parser.parse_args()

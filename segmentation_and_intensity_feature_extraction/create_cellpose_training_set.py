@@ -11,7 +11,6 @@ def get_max_proj(img):
     max_proj = np.max(img, axis=0)[np.newaxis, ...][0,:,:]
     return max_proj
 
-
 """
 For this project, we take a maxproject of the timelapse and save it as a tiff file.... We then segment this only once and use it as a training set for cellpose 
 """
