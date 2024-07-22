@@ -37,3 +37,21 @@ python make_collection.py --colorizer_input_dir colorizer_input_directory_for_co
 ```
 This produces a collection file that you can then upload and view on colorizer
 
+
+
+## Training a custom cellpose model(Optional)
+
+Cellpose has many standard models that you can apply. This is often a great place to start to get a first pass segmentation. 
+
+However, if these are not generalizable, you can also train a custom model. We recomend using the cellpose GUI for creating annotations for a subset of data and exporting the annotations as png masks.
+
+Here we provide a python script to do this in a programatic way:
+
+```
+python train_cellpose.py --input_dir training_set_dir --cellpose_model_save_dir trained_model_savedir --pretrained_model_dir generic_cellpose_model_weights_dir
+```
+
+
+
+
+
