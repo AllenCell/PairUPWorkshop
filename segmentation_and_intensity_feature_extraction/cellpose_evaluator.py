@@ -2,10 +2,8 @@ import shutil
 import os
 from tqdm import tqdm
 from cellpose import core, utils, io, models, metrics
-
 import numpy as np
 import skimage
-import tifffile
 import argparse
 from cellpose import denoise, io
 from aicsimageio import AICSImage

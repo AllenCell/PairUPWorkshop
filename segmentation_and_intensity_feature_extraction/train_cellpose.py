@@ -1,15 +1,12 @@
 import shutil
 import os
-from tqdm import tqdm
 from cellpose import models
 import numpy as np
 import tifffile
 import argparse
 from PIL import Image
 import random
-import skimage
 from cellpose import io, models, train
-from cellpose import denoise
 
 random.seed(2)
 

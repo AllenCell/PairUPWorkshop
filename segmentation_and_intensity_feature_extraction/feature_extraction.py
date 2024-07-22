@@ -6,7 +6,6 @@ from skimage.measure import regionprops
 import pandas as pd
 from skimage.measure import label
 from skimage.measure import regionprops
-from skimage.segmentation import find_boundaries
 
 """
 Computes features on manifests generated from raw and segmentation pairs

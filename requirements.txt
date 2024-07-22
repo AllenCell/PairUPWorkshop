@@ -5,3 +5,6 @@ bioio-tifffile
 scikit-image
 numpy
 ec2_metadata
+pandas
+aicsimageio
+cellpose
