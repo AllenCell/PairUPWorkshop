@@ -10,12 +10,8 @@ from scipy.ndimage import affine_transform
 from aicsimageio import AICSImage
 
 parser= argparse.ArgumentParser()
-parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Sandi/pair-up/chris")
-parser.add_argument("--output_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images")
-parser.add_argument("--normalize", default=False)
-parser.add_argument("--flow_threshold", type=float, default=0.5)
-parser.add_argument("--min_size", type=int, default=1000)
-parser.add_argument("--cellpose_prob", type=float, default=-5.0)
+parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Sandi/pair-up/chris", help="Input directory where timelapse images are stored")
+parser.add_argument("--output_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images", help="Output directory of where to save aligned max projects")
 
 
 """
@@ -29,6 +25,18 @@ def get_max_proj(img):
     return max_proj
 
 def align_images_sift(source_gray, target_gray):
+    """
+    Aligns the source image to the target image using an affine registration via matching of sift features.
+    
+    Parameters:
+    - source_gray: Grayscale source image to be aligned.
+    - target_gray: Grayscale target image.
+    
+    Returns:
+    - aligned_image: The source image aligned to the target image.
+    """
+
+
     sift = cv2.SIFT_create()
     # Find keypoints and descriptors in the source and target images
     keypoints_source, descriptors_source = sift.detectAndCompute(source_gray, None)
@@ -54,7 +62,7 @@ def align_images_sift(source_gray, target_gray):
 
 def align_rigid_images_sift(source_gray, target_gray):
     """
-    Aligns the source image to the target image using rigid registration.
+    Aligns the source image to the target image using rigid registration via matching of sift features.
     
     Parameters:
     - source_gray: Grayscale source image to be aligned.
@@ -89,7 +97,17 @@ def align_rigid_images_sift(source_gray, target_gray):
 
 
 def align_images_cross_correlation(image, reference):
-    # Perform cross-correlation
+    """
+    Aligns the source image to the target image using cross correlation. Does a rigid registration.
+    
+    Parameters:
+    - source_gray: Grayscale source image to be aligned.
+    - target_gray: Grayscale target image.
+    
+    Returns:
+    - aligned_image: The source image aligned to the target image.
+
+    """    
     correlation = match_template(reference, image, pad_input=True)
     
     # Find the peak position

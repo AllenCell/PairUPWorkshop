@@ -18,8 +18,9 @@ Generic cellpose traineer that has different options to train cellpose models
 """
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/cellpose_training_set")
-parser.add_argument("--cellpose_model_save_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/cellpose_training_set")
+parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/cellpose_training_set", help="Input directory where training set is stored")
+parser.add_argument("--cellpose_model_save_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/cellpose_training_set", help="Output directory where trained model is saved")
+parser.add_argument("--pretrained_model_dir", type= str, default=None, help="Path to pretrained model to start training from(Optional)")
 
 
 
@@ -29,6 +30,7 @@ def intensity_normalization_max(img):
     return rescaled_img.astype(np.uint16)
 
 def randomly_sample_patches(train_input, train_mask, samples=1,patch_dim=250):
+    '''Randomly sample patches from a large FOV'''
     x_max_to_sample = np.shape(train_input)[1] - patch_dim
     y_max_to_sample = np.shape(train_input)[0] - patch_dim
     patches_raw = []
@@ -58,7 +60,7 @@ if __name__ == "__main__":
         input_train_images.append(train_img)
 
     # print(f"training set is size {len(input_train_images)}")
-    model = models.CellposeModel(gpu=True, pretrained_model="/home/goutham.nadarajan/.cellpose/models/cyto3")
+    model = models.CellposeModel(gpu=True, pretrained_model=args.pretrained_model_dir)
     train.train_seg(model.net, input_train_images, input_masks, channels=[0,0], save_path=args.cellpose_model_save_dir)
 
 

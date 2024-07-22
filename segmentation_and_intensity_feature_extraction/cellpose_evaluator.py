@@ -26,11 +26,7 @@ def get_max_proj(img):
 parser= argparse.ArgumentParser()
 parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images")
 parser.add_argument("--output_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_seg")
-parser.add_argument("--normalize", default=False)
-parser.add_argument("--flow_threshold", type=float, default=0.5)
-parser.add_argument("--min_size", type=int, default=1000)
-parser.add_argument("--cellpose_prob", type=float, default=-5.0)
-parser.add_argument("--model_weights", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/cellpose_training_set/models/cellpose_1721189076.990467")
+parser.add_argument("--model_path", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/cellpose_training_set/models/cellpose_1721189076.990467")
 
 # 
 if __name__ == "__main__":
@@ -38,7 +34,7 @@ if __name__ == "__main__":
     args= parser.parse_args()
     filenames = [f for f in os.listdir(args.input_dir) if f.endswith(".tiff")]
     print(filenames)
-    model = models.CellposeModel(gpu=True, pretrained_model=args.model_weights)
+    model = models.CellposeModel(gpu=True, pretrained_model=args.model_path)
     for tp in range(len(filenames)):
         img = AICSImage(os.path.join(args.input_dir, filenames[tp]))
         raw_img = img.data[:, 0, 0, :, :]

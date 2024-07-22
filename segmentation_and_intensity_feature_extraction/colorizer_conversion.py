@@ -292,10 +292,7 @@ def make_collection(output_dir="./data/", do_frames=True, scale=1, dataset="", p
         update_collection(collection_filepath, dataset, dataset)
     else:
         collection = []
-        if only_3D==False:
-            movies = [f for f in os.listdir(parent_input_csvs_dir) if f.endswith(".csv") if ("3D" not in f) and not f.startswith(".")]
-        else:
-            movies = [f for f in os.listdir(parent_input_csvs_dir) if f.endswith(".csv") if ("3D" in f) and not f.startswith(".")]
+        movies = [f for f in os.listdir(parent_input_csvs_dir) if f.endswith(".csv") if ("3D" not in f) and not f.startswith(".")]
 
         for movie in movies:
             # Read in each of the conditions as a dataset
