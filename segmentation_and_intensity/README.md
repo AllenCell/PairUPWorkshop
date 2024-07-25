@@ -26,18 +26,34 @@ Now that we have pairs of raw and segmented images, we now calculate instance le
 python feature_extraction.py --input_seg_dir segmentation_dir --input_raw_timelpase_dir aligned_data_dir --feature_manifest_dir feature_output_manifest_dir
 ```
 
-## Data visualizatioin using colorizer- TBD
+## Data visualizatioin using colorizer
 
-To visualize the results of this data:
+To visualize these results, we utilize [Timelapse Feature Explorer (TFE)](https://github.com/allen-cell-animated/timelapse-colorizer)
+
+We first convert our features and segmentations into a format that colorizer can read:
 
 ```
 python colorizer_conversion.py --parent_input_csvs_dir output_dir_of_feature_manifest_dir --output_dir colorizer_output_directory
 
-python make_collection.py --colorizer_input_dir colorizer_input_directory_for_converted_data
+python make_collection.py --colorizer_input_dir colorizer_input_directory_for_converted_data # This is if you have multiple movies that you want to view as a collection
 ```
+
 This produces a collection file that you can then upload and view on colorizer
 
 
+
+To view your data on the viewer:
+
+```
+# starts a local server 
+python run_local_server.py 8080
+
+# On your browser, go to http://localhost:8080
+
+Copy the address of your collection file of interest and click the viewer directory to open the viewer and upload that address in the load data tab
+
+```
+See more detailed information in section 5.2 of this [jupyter notebook](https://github.com/allen-cell-animated/colorizer-data/blob/doc/getting-started-guide/documentation/getting_started_guide/GETTING_STARTED.ipynb)
 
 ## Training a custom cellpose model(Optional)
 
