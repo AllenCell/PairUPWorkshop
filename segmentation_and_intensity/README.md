@@ -15,7 +15,7 @@ python align_timelapse.py --input_dir input_directory_of_raw_data --output_dir o
 We can now segment the timelapse using Cellpose. Here, after our timelapse is aligned, we create a maximum intensity projection through time and segment that using a custom cellpose model
 
 ```
-python align_timelapse.py --input_dir input_directory --output_dir output_directory --model_path model_path_of_trained_model
+python cellpose_evaluator.py --input_dir input_directory --output_dir output_directory --model_path model_path_of_trained_model
 ```
 
 ## Feature Calculation workflow
