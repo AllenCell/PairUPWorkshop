@@ -162,4 +162,4 @@ cython_debug/
 #.idea/
 
 # Outputs and Results folders
-# /segmentation_and_shape/dendrite_skels_out
+/segmentation_and_shape/dendrite_skels_out
