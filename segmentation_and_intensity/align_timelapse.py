@@ -2,15 +2,16 @@ import cv2
 import numpy as np
 import os
 import argparse
-from aicsimageio.writers import OmeTiffWriter
 from skimage.feature import match_template
 from skimage.feature import peak_local_max
 from scipy.ndimage import affine_transform
-from aicsimageio import AICSImage
+from bioio import BioImage
+from bioio.writers import OmeTiffWriter
+
 
 parser= argparse.ArgumentParser()
 parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Sandi/pair-up/chris", help="Input directory where timelapse images are stored")
-parser.add_argument("--output_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images", help="Output directory of where to save aligned max projects")
+parser.add_argument("--output_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images_v2", help="Output directory of where to save aligned max projects")
 
 
 """
@@ -133,13 +134,13 @@ if __name__ == '__main__':
 
     for f in range(len(filenames)):
         print(f"Aligning filenames {f}")
-        img = AICSImage(os.path.join(args.input_dir, filenames[f]))
+        img = BioImage(os.path.join(args.input_dir, filenames[f]))
         timepoints = img.dims["T"][0]
-        target_image = get_max_proj(AICSImage(os.path.join(args.input_dir, filenames[f])).data[0,0,:,:,:])
+        target_image = get_max_proj(BioImage(os.path.join(args.input_dir, filenames[f])).data[0,0,:,:,:]) # dim order is TCZYX
         aligned_images = [target_image]
         for tp in range(1, timepoints):
             # Align subsequent timepoints to the first timepoint
-            source_image = get_max_proj(AICSImage(os.path.join(args.input_dir, filenames[f])).data[tp, 0, :, :, :])            
+            source_image = get_max_proj(BioImage(os.path.join(args.input_dir, filenames[f])).data[tp, 0, :, :, :])            
             aligned_image = align_images_cross_correlation(source_image, target_image)
             aligned_images.append(aligned_image)
         # Save aligned images as a single image

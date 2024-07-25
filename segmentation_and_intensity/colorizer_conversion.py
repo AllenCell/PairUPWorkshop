@@ -7,7 +7,7 @@ python colorizer_data/bin/example_scripts/convert_emt_nuclear_data.py --scale 1.
 ```
 """
 
-from aicsimageio import AICSImage
+from bioio import BioImage
 import argparse
 import json
 import logging
@@ -104,13 +104,13 @@ FEATURE_INFO: List[FeatureInfo] = [
 
 PHYSICAL_PIXEL_SIZE_XY = 0.271
 PHYSICAL_PIXEL_UNIT_XY = "µm"
+FRAME_DURATION_SEC= 60
 
-
-def get_image_from_row(row: pd.DataFrame) -> AICSImage:
+def get_image_from_row(row: pd.DataFrame) -> BioImage:
     zstackpath = row[SEGMENTED_IMAGE_COLUMN]
     zstackpath = zstackpath.strip('"')
     zstackpath = sanitize_path_by_platform(zstackpath)
-    return AICSImage(zstackpath)
+    return BioImage(zstackpath)
 
 
 def make_frame(
@@ -267,54 +267,41 @@ def make_dataset(
     start_frame = grouped_frames.get_group(list(grouped_frames.groups.keys())[0])['Timepoint'].iloc[0]
     dims = get_dataset_dimensions(grouped_frames)
     metadata = ColorizerMetadata(
-        frame_width=dims[0], frame_height=dims[1], frame_units=dims[2], frame_duration_sec=1800, start_time_sec=int(start_frame*1800)
+        frame_width=dims[0], frame_height=dims[1], frame_units=dims[2], frame_duration_sec=FRAME_DURATION_SEC, start_time_sec=int(start_frame*FRAME_DURATION_SEC)
     )
 
     # Make the features, frame data, and manifest.
     nframes = len(grouped_frames)
-    
+    writer.set_frame_paths(generate_frame_paths(nframes))
+
     make_features(full_dataset, writer)
     if do_frames:
         make_frames_parallel(grouped_frames, scale, writer)
-    writer.write_manifest(nframes, metadata=metadata) # first frame
+    writer.write_manifest(metadata=metadata) # first frame
 
 
 # This is stuff scientists are responsible for!!
 def make_collection(output_dir="./data/", do_frames=True, scale=1, dataset="", parent_input_csvs_dir = "", only_3D=False):
-    assert dataset != "" or parent_input_csvs_dir != "", "Must specify either a dataset or a parent directory of csvs to convert"
-    if dataset != "":
-        # convert just the described dataset.
-        # data = pd.read_csv(dataset)
-        logging.info("Making dataset '" + dataset + "'.")
-        make_dataset(data, output_dir, dataset, do_frames, scale)
-        # Update the collections file if it already exists
-        collection_filepath = output_dir + "/collection.json"
-        update_collection(collection_filepath, dataset, dataset)
-    else:
-        collection = []
-        movies = [f for f in os.listdir(parent_input_csvs_dir) if f.endswith(".csv") if ("3D" not in f) and not f.startswith(".")]
+    assert parent_input_csvs_dir != "", "Must specify either a dataset or a parent directory of csvs to convert"
 
-        for movie in movies:
-            # Read in each of the conditions as a dataset
-            collection.append({"name": movie, "path": movie})
-            readPath = os.path.join(parent_input_csvs_dir, movie)
-            print(readPath)
-            data = pd.read_csv(readPath)
-            logging.info("Making dataset '" + movie + "'.")
-            make_dataset(data, output_dir + "/" + movie, dataset, do_frames, scale)
-            
+    collection = []
+    movies = [f for f in os.listdir(parent_input_csvs_dir) if f.endswith(".csv") and not f.startswith(".")]
 
-
-
-
-
-
+    for movie in movies:
+        # Read in each of the conditions as a dataset
+        collection.append({"name": movie, "path": movie})
+        readPath = os.path.join(parent_input_csvs_dir, movie)
+        print(readPath)
+        data = pd.read_csv(readPath)
+        logging.info("Making dataset '" + movie + "'.")
+        make_dataset(data, output_dir + "/" + movie, dataset, do_frames, scale)
+        
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--output_dir",
     type=str,
-    default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/colorizer_outputs",
+    default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/colorizer_outputs_3",
     help="Parent directory to output to. Data will be written to a subdirectory named after the dataset parameter.",
 )
 
@@ -332,11 +319,7 @@ parser.add_argument(
     required=False,
     help="If you wanna specify a parent directory of csvs to convert, specify it here, otherwise leave blank"
 )
-parser.add_argument(
-    "--only_3D",
-    action="store_true",
-    help="If included, only converts the 3D datasets",
-)
+
 
 parser.add_argument(
     "--noframes",
@@ -363,7 +346,6 @@ def main():
         do_frames=not args.noframes,
         parent_input_csvs_dir = args.parent_input_csvs_dir,
         scale=args.scale,
-        only_3D= args.only_3D
     )
 
 

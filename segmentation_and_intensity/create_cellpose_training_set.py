@@ -1,9 +1,8 @@
-import cv2
 import numpy as np
 import os
 import argparse
-from aicsimageio.writers import OmeTiffWriter
-from aicsimageio import AICSImage
+from bioio import BioImage
+from bioio.writers import OmeTiffWriter
 
 def get_max_proj(img):
     '''returns max project of image'''

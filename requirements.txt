@@ -6,6 +6,6 @@ scikit-image
 numpy
 ec2_metadata
 pandas
-aicsimageio
 cellpose
-cv2
+opencv-python
+git+https://github.com/allen-cell-animated/colorizer-data.git@v1.3.0

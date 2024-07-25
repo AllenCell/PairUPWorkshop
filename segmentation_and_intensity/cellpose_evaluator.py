@@ -6,8 +6,8 @@ import numpy as np
 import skimage
 import argparse
 from cellpose import denoise, io
-from aicsimageio import AICSImage
-from aicsimageio.writers import OmeTiffWriter
+from bioio import BioImage
+from bioio.writers import OmeTiffWriter
 
 
 """
@@ -22,8 +22,8 @@ def get_max_proj(img):
 
 
 parser= argparse.ArgumentParser()
-parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images")
-parser.add_argument("--output_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_seg")
+parser.add_argument("--input_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images_v2")
+parser.add_argument("--output_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_seg_2")
 parser.add_argument("--model_path", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/cellpose_training_set/models/cellpose_1721189076.990467")
 
 # 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     print(filenames)
     model = models.CellposeModel(gpu=True, pretrained_model=args.model_path)
     for tp in range(len(filenames)):
-        img = AICSImage(os.path.join(args.input_dir, filenames[tp]))
+        img = BioImage(os.path.join(args.input_dir, filenames[tp]))
         raw_img = img.data[:, 0, 0, :, :]
         mip_raw = get_max_proj(raw_img)
         masks, flows, styles = model.eval(mip_raw, channels=[0,0])

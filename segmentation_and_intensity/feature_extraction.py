@@ -1,7 +1,8 @@
 import os
 import numpy as np
 import argparse
-from aicsimageio import AICSImage
+from bioio import BioImage
+from bioio.writers import OmeTiffWriter
 from skimage.measure import regionprops
 import pandas as pd
 from skimage.measure import label
@@ -12,8 +13,8 @@ Computes features on manifests generated from raw and segmentation pairs
 """
 
 parser= argparse.ArgumentParser()
-parser.add_argument("--input_seg_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_seg")
-parser.add_argument("--input_raw_timelapse_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images")
+parser.add_argument("--input_seg_dir", type= str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_seg_2")
+parser.add_argument("--input_raw_timelapse_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/pairup_chris_results_aligned_images_v2")
 parser.add_argument("--feature_manifest_dir", type=str, default="/allen/aics/assay-dev/users/Goutham/pairup_chris_results/feature_manifests")
 
 
@@ -74,25 +75,28 @@ if __name__ == "__main__":
     seg_filenames = [f for f in os.listdir(args.input_seg_dir) if "seg" in f]
 
     for f in range(len(seg_filenames)):
+        print("Processing segmentation", f)
+        # for each segmentation, find the corresponding raw timelapse
         seg_img_fp = os.path.join(args.input_seg_dir, seg_filenames[f])
-        seg_img = AICSImage(seg_img_fp)
+        seg_img = BioImage(seg_img_fp)
         raw_img_fn = seg_filenames[f].split("seg_", 1)[1]
         raw_timelapse_filename = [f for f in os.listdir(args.input_raw_timelapse_dir) if raw_img_fn in f]
         assert len(raw_timelapse_filename) == 1
         raw_img_fp = os.path.join(args.input_raw_timelapse_dir, raw_timelapse_filename[0])
-        raw_timelapse = AICSImage(raw_img_fp)
+        raw_timelapse = BioImage(raw_img_fp)
         timepoints = raw_timelapse.dims["T"][0]
         seg_img = seg_img.data[0,0,0,:,:]
         dataframes = []
+        # Process all timepoints in that pair
         for tp in range(timepoints):
-            print("timepoint is", tp)
+            print("timepoint processing is", tp)
             raw_tp = raw_timelapse.get_image_dask_data("YX", T=tp)
             manifest = calculate_features_from_raw_seg_pair(raw_tp, seg_img, tp, raw_timelapse_filename[0], seg_img_fp)
             dataframes.append(manifest)
             # save manifest
         FULL_DATAFRAME = pd.concat(dataframes)
         print(np.shape(FULL_DATAFRAME))
-        feature_manifest_name = f"feature_manifest_{raw_img_fn.split('.tiff', 1)[0]}.csv".replace(' ', '_')
+        feature_manifest_name = f"feature_manifest_{raw_img_fn.split('.tiff', 1)[0]}.csv".replace(' ', '_').replace('#', '_')
 
         FULL_DATAFRAME.to_csv(os.path.join(args.feature_manifest_dir, feature_manifest_name))
 
