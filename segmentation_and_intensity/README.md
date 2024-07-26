@@ -48,7 +48,7 @@ python run_local_server.py 8080
 
 # On your browser, go to http://localhost:8080
 
-Copy the address of your collection file of interest and click the viewer directory to open the viewer and upload that address in the load data tab
+Copy the address of your collection file of interest and click the timelapse-feature-explorer directory to open the viewer and upload that address in the load data tab
 
 ```
 
