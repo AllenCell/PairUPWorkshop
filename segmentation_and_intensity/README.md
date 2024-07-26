@@ -52,7 +52,7 @@ Copy the address of your collection file of interest and click the timelapse-fea
 
 ```
 
-## Data visualizatioin using web volume viewer
+## Data visualization using web volume viewer
 
 We can also use the [Web-volume viewer](https://github.com/allen-cell-animated/volume-viewer) to visualize the results. A neccesary step here is converting the data into the OME-Zarr format
 
