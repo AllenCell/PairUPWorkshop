@@ -63,9 +63,9 @@ python convert_to_zarr.py --input_dir input_dir --output_dir output_converted_mo
 #  similarly start a local server 
 python run_local_server.py 8080
 
-Copy the address of the Zarr file of interest and click the 3d-volume-viewer directory to open the viewer and upload that address in the load data tab
-
 ```
+
+Copy the address of the Zarr file of interest and click the 3d-volume-viewer directory to open the viewer and upload that address in the load data tab
 
 ## Training a custom cellpose model(Optional)
 
