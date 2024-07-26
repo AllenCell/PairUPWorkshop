@@ -1,4 +1,4 @@
-# Segmentation and intensity feature calculation workflow
+# Segmentation and intensity feature calculation workflow - Case Study for Calcium Signaling Dataset
 
 
 
