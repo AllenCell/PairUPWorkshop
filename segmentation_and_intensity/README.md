@@ -1,4 +1,4 @@
-# Segmentation and intensity feature calculation workflow
+# Segmentation and intensity feature calculation workflow - Case Study for Calcium Signaling Dataset
 
 
 
@@ -40,8 +40,6 @@ python make_collection.py --colorizer_input_dir colorizer_input_directory_for_co
 
 This produces a collection file that you can then upload and view on colorizer
 
-
-
 To view your data on the viewer:
 
 ```
@@ -53,7 +51,21 @@ python run_local_server.py 8080
 Copy the address of your collection file of interest and click the viewer directory to open the viewer and upload that address in the load data tab
 
 ```
-See more detailed information in section 5.2 of this [jupyter notebook](https://github.com/allen-cell-animated/colorizer-data/blob/doc/getting-started-guide/documentation/getting_started_guide/GETTING_STARTED.ipynb)
+
+## Data visualizatioin using web volume viewer
+
+We can also use the [Web-volume viewer](https://github.com/allen-cell-animated/volume-viewer) to visualize the results. A neccesary step here is converting the data into the OME-Zarr format
+
+```
+# Converts timelapse data into the OME-Zarr standard
+python convert_to_zarr.py --input_dir input_dir --output_dir output_converted_movies_path
+
+#  similarly start a local server 
+python run_local_server.py 8080
+
+Copy the address of the Zarr file of interest and click the 3d-volume-viewer directory to open the viewer and upload that address in the load data tab
+
+```
 
 ## Training a custom cellpose model(Optional)
 
