@@ -67,23 +67,6 @@ Copy the address of the Zarr file of interest and click the 3d-volume-viewer dir
 
 ```
 
-This produces a collection file that you can then upload and view on colorizer
-
-To view your data on the viewer:
-
-```
-# starts a local server 
-python run_local_server.py 8080
-
-# On your browser, go to http://localhost:8080
-
-Copy the address of your collection file of interest and click the viewer directory to open the viewer and upload that address in the load data tab
-
-```
-
-
-See more detailed information in section 5.2 of this [jupyter notebook](https://github.com/allen-cell-animated/colorizer-data/blob/doc/getting-started-guide/documentation/getting_started_guide/GETTING_STARTED.ipynb)
-
 ## Training a custom cellpose model(Optional)
 
 Cellpose has many standard models that you can apply. This is often a great place to start to get a first pass segmentation. 
