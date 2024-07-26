@@ -22,7 +22,7 @@ if __name__ == "__main__":
     filenames = [f for f in os.listdir(args.input_dir) if "affine" in f]
 
     for f in range(len(filenames)):
-        img = AICSImage(os.path.join(args.input_dir, filenames[f]))
+        img = BioImage(os.path.join(args.input_dir, filenames[f]))
         timelapse = img.data[:,0,0,:,:]
         max_proj_thru_time = get_max_proj(timelapse)
         # Save max projection
