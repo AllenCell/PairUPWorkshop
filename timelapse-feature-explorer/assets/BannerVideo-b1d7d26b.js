@@ -1,0 +1,1 @@
+import{j as e}from"./main-d8be0a65.js";import"./modulepreload-polyfill-3cfb730f.js";const r="/timelapse-feature-explorer/assets/banner_video-783a41be.mp4";function s(){return e.jsx("video",{autoPlay:!0,loop:!0,muted:!0,children:e.jsx("source",{src:r,type:"video/mp4"})})}export{s as default};
