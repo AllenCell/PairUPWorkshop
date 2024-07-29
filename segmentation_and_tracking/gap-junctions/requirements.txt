@@ -1,0 +1,8 @@
+aicsimageio==4.14.0
+aicssegmentation @ https://github.com/AllenCell/aics-segmentation.git
+numpy==2.0.0
+pandas==2.2.2
+matplotlib==3.9.1
+scikit-image==0.24.0
+trackpy==0.6.4
+tqdm==4.66.4
