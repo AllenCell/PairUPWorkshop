@@ -1,6 +1,7 @@
 
 IS_TEST = False
 
+# %%
 from pathlib import Path
 import numpy as np
 # from bioio.bio_image import imread
@@ -25,7 +26,7 @@ else:
     pass
 
 
-
+# %%
 def get_dim_map(dim_order: str):
     dims = [a for a in dim_order]
 
@@ -100,7 +101,7 @@ def arr2graph(arr):
     return nodes_lab, edges_lab, skels_lab, conn
 
 
-
+# %%
 ## Define some global variables
 DIM_ORDER = 'TCZYX'
 DIM_MAP = get_dim_map(DIM_ORDER)
@@ -125,7 +126,7 @@ OUT_DIRS = [SKELS_OUT_DIR,
 for d in OUT_DIRS:
     Path.mkdir(d, exist_ok=True)
 
-
+# %%
 ## run the analysis on each file in IMG_PATHS
 for filepath in IMG_PATHS:
     filepath = IMG_PATHS[0] if IS_TEST else filepath
@@ -183,7 +184,7 @@ for filepath in IMG_PATHS:
     ## get the number of dendrites for each cell
     ## break the skeleton apart at the nucleus by multiplying the skeletons by the inverse of
     ## the dapi segmentations
-    dendrites = img_phall * nodes_edges_skels[2].astype(bool) * ~img_dapi.astype(bool)
+    dendrites = img_phall * nodes_edges_skels[1].astype(bool) * ~img_dapi.astype(bool)
     ## re-label these dendrites
     dendrites_lab = morphology.label(dendrites.squeeze(), connectivity=dendrites.squeeze().ndim).astype(dendrites.dtype)
     unq_dendrites = {prop.label: np.unique((dendrites.squeeze()[prop.slice] == prop.label) * dendrites_lab.squeeze()[prop.slice]) for prop in measure.regionprops(dendrites.squeeze())}
@@ -283,3 +284,5 @@ for filepath in IMG_PATHS:
         break
     else:
         pass
+
+# %%
