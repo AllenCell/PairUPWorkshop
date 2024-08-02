@@ -1,0 +1,5 @@
+# Files to be uploaded
+  # Read images and split channels
+  # Run cellpose 
+  # Extract features from instance segmented output
+  
